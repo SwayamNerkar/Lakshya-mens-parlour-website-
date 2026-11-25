@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Lakshya Mens Parlour | लक्ष्य मेन्स पार्लर – Rajendra Nagar, Nagpur</title>
+  <meta name="description" content="Lakshya Mens Parlour - Rajendra Nagar, Nagpur's premier men's haircutting & grooming salon. 2 Barbers, 30-min slot booking, Rate list, Har 3rd Cut FREE loyalty rewards.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            salon: {
+              dark: '#080B0F',
+              card: '#111622',
+              cardHover: '#18202E',
+              gold: '#D4AF37',
+              amber: '#F59E0B',
+              amberDark: '#D97706',
+              border: 'rgba(245, 158, 11, 0.25)'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Outfit', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons & Canvas Confetti -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body class="bg-[#080B0F] text-slate-100 min-h-screen selection:bg-amber-500 selection:text-black">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <!-- Audio Player Indicator -->
+  <div id="sound-indicator" class="hidden"></div>
+
+  <!-- ============================================================
+       PIN AUTH MODAL (PROTECTED OWNER DASHBOARD ACCESS)
+       Default PIN: 1234
+       ============================================================ -->
+  <div id="auth-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#080B0F]/90 backdrop-blur-xl hidden">
+    <div class="glass-panel p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl relative border-2 border-amber-500/50">
+      
+      <!-- Close Button -->
+      <button onclick="closeOwnerLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Brand Emblem -->
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-300 p-0.5 mx-auto mb-3 shadow-xl shadow-amber-500/30">
+        <div class="w-full h-full bg-[#111622] rounded-2xl flex items-center justify-center text-3xl">
+          💈
+        </div>
+      </div>
+      
+      <div class="inline-block px-3 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-[10px] text-amber-300 font-bold uppercase tracking-widest mb-1">
+        Owner / Staff Portal
+      </div>
+      
+      <h2 class="text-xl sm:text-2xl font-black font-display text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-400 to-amber-500">
+        LAKSHYA MENS PARLOUR
+      </h2>
+      <p class="text-xs font-bold text-amber-300/90">लक्ष्य मेन्स पार्लर • Rajendra Nagar</p>
+
+      <!-- PIN Input -->
+      <div class="my-5">
+        <label class="block text-xs font-bold text-slate-200 mb-2">Darj Karein 4-Digit Owner PIN:</label>
+        <div class="flex justify-center gap-2 mb-2">
+          <input type="password" id="pin-input" maxlength="6" placeholder="••••" autocomplete="off" class="w-40 text-center tracking-widest text-3xl font-black bg-slate-900 border-2 border-amber-500/60 rounded-2xl py-2.5 text-amber-400 focus:outline-none focus:border-amber-400 shadow-inner">
+        </div>
+        <div id="auth-error-msg" class="text-xs text-red-400 font-semibold hidden">Galat PIN! Kripya sahi PIN dalein.</div>
+      </div>
+
+      <!-- Quick Demo PIN Button -->
+      <div class="flex items-center justify-between text-xs text-slate-400 mb-5 px-1">
+        <span>Default Demo PIN:</span>
+        <button type="button" onclick="fillDemoPin()" class="text-amber-400 font-black underline hover:text-amber-300 text-xs">
+          Auto-fill 1234
+        </button>
+      </div>
+
+      <button id="btn-login" onclick="loginWithOwnerPin()" class="w-full py-3 rounded-xl btn-gold text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20">
+        <i data-lucide="unlock" class="w-4 h-4"></i>
+        <span>Unlock Salon Manager</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       ============================================================
+       A. MAIN PUBLIC WEBSITE (SHOWN BY DEFAULT)
+       Attractive, Image-Rich, Mobile-First Luxury Men's Salon
+       ============================================================
+       ============================================================ -->
+  <div id="public-website" class="w-full min-h-screen">
+
+    <!-- 1. STICKY TOP NAVBAR -->
+    <header class="sticky top-0 z-40 bg-[#080B0F]/95 backdrop-blur-md border-b border-amber-500/30 px-3 sm:px-6 py-2.5 shadow-xl">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        
+        <!-- Salon Grand Brand -->
+        <a href="#home" class="flex items-center gap-2.5 group">
+          <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center text-xl text-black font-black shadow-md shadow-amber-500/20 shrink-0 group-hover:scale-105 transition">
+            💈
+          </div>
+          <div>
+            <div class="text-base sm:text-xl font-black font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-400 to-amber-500 leading-tight">
+              LAKSHYA MENS PARLOUR
+            </div>
+            <div class="text-[10px] sm:text-xs text-amber-300 font-semibold flex items-center gap-1.5">
+              <span>लक्ष्य मेन्स पार्लर</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-slate-400">Rajendra Nagar, Nagpur</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
+          <a href="#services" class="hover:text-amber-400 transition">Services & Rates</a>
+          <a href="#gallery" class="hover:text-amber-400 transition">Haircuts Gallery</a>
+          <a href="#loyalty" class="hover:text-amber-400 transition">Loyalty Club (Free Cut)</a>
+          <a href="#booking" class="hover:text-amber-400 transition">Book Online</a>
+          <a href="#location" class="hover:text-amber-400 transition">Location</a>
+        </nav>
+
+        <!-- Right Action Buttons -->
+        <div class="flex items-center gap-2">
+          <!-- Book Slot Direct Button -->
+          <a href="#booking" class="px-3.5 py-2 rounded-xl btn-gold text-xs font-extrabold flex items-center gap-1.5 shadow-md shadow-amber-500/20">
+            <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
+            <span class="hidden xs:inline">Book Slot</span>
+          </a>
+
+          <!-- Owner / Staff Login Button -->
+          <button id="nav-btn-owner" onclick="handleOwnerNavClick()" class="px-2.5 sm:px-3 py-2 rounded-xl bg-slate-900 border border-amber-500/40 text-amber-300 hover:text-white hover:bg-slate-800 text-[11px] font-bold flex items-center gap-1.5 transition">
+            <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+            <span id="nav-owner-text" class="hidden sm:inline">Owner Login</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+
+    <!-- 2. GRAND HERO BANNER WITH REAL SALON IMAGES -->
+    <section id="home" class="relative overflow-hidden border-b border-amber-500/20">
+      
+      <!-- Background Salon Photo with Dark Luxury Gradients -->
+      <div class="absolute inset-0 z-0">
+        <img src="/images/shop-front.jpg" alt="Lakshya Mens Parlour Shop Front" class="w-full h-full object-cover object-center filter brightness-50 contrast-125 scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#080B0F] via-[#080B0F]/80 to-[#080B0F]/40"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#080B0F_90%)]"></div>
+      </div>
+
+      <!-- Hero Content Container -->
+      <div class="relative z-10 max-w-5xl mx-auto px-4 pt-12 pb-16 sm:pt-20 sm:pb-24 text-center">
+        
+        <!-- Live Badges -->
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
+          <span class="bg-black/80 backdrop-blur-md px-3.5 py-1 rounded-full border border-amber-500/40 text-xs font-bold text-amber-300 flex items-center gap-2 shadow-lg">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator"></span>
+            <span>OPEN NOW • 2 Barbers On Duty</span>
+          </span>
+          <span class="bg-amber-500 text-black px-3 py-1 rounded-full text-xs font-black flex items-center gap-1 shadow-lg shadow-amber-500/20">
+            ★ 4.9 (500+ Nagpur Clients)
+          </span>
+          <span class="bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-slate-700 text-xs font-semibold text-slate-300">
+            ❄️ 100% AC Salon
+          </span>
+        </div>
+
+        <!-- Grand Salon Title -->
+        <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-amber-300 to-amber-500 drop-shadow-xl leading-tight">
+          LAKSHYA MENS PARLOUR
+        </h1>
+        <div class="text-xl sm:text-2xl md:text-3xl font-extrabold text-amber-400 mt-1 drop-shadow">
+          लक्ष्य मेन्स पार्लर
+        </div>
+
+        <!-- Tagline & Description -->
+        <p class="text-base sm:text-xl font-bold text-white mt-3 tracking-wide">
+          Nagpur's Premier Men's Haircutting & Grooming Studio
+        </p>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto mt-2 leading-relaxed">
+          Walk out looking sharp and confident. Fade cuts, beard styling, Ayurvedic scalp massage, and charcoal facials. With 2 master barbers, you enjoy fast, precision service without long waiting lines!
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          <a href="#booking" class="px-6 py-3.5 rounded-2xl btn-gold text-sm font-black uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-amber-500/30 hover:scale-105 transition">
+            <i data-lucide="scissors" class="w-4 h-4"></i>
+            <span>Book Slot Online (30 Min)</span>
+          </a>
+
+          <a href="#services" class="px-5 py-3.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-white border border-amber-500/40 text-sm font-bold flex items-center gap-2 transition">
+            <i data-lucide="scroll-text" class="w-4 h-4 text-amber-400"></i>
+            <span>View Rate Card</span>
+          </a>
+
+          <a href="tel:09876543210" class="px-4 py-3.5 rounded-2xl bg-emerald-700/80 hover:bg-emerald-600 text-white border border-emerald-500/40 text-sm font-bold flex items-center gap-2 transition">
+            <i data-lucide="phone-call" class="w-4 h-4"></i>
+            <span>Call Shop</span>
+          </a>
+        </div>
+
+        <!-- Quick Offer Banner -->
+        <div class="mt-8 inline-flex items-center gap-2 p-2 px-4 rounded-2xl bg-gradient-to-r from-amber-500/20 via-yellow-500/10 to-amber-500/20 border border-amber-500/40 text-amber-300 text-xs sm:text-sm font-bold shadow-lg">
+          <span class="text-base">🎁</span>
+          <span>VIP Loyalty Offer: <strong>Har 3rd Cut FREE</strong> & <strong>5th Cut 50% OFF!</strong></span>
+          <a href="#loyalty" class="underline ml-1 hover:text-white font-extrabold text-xs">Janiye Kaise →</a>
+        </div>
+
+      </div>
+
+      <!-- Quick Trust Badges Strip -->
+      <div class="relative z-10 border-t border-slate-800/80 bg-slate-950/80 backdrop-blur-md py-4 px-4">
+        <div class="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="flex items-center justify-center gap-2 text-xs font-bold text-slate-300">
+            <span class="text-amber-400 text-base">💈</span>
+            <span>2 Master Barbers</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-xs font-bold text-slate-300">
+            <span class="text-amber-400 text-base">🧼</span>
+            <span>100% Sanitized Blades</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-xs font-bold text-slate-300">
+            <span class="text-amber-400 text-base">⏱️</span>
+            <span>Zero Long Waiting</span>
+          </div>
+          <div class="flex items-center justify-center gap-2 text-xs font-bold text-slate-300">
+            <span class="text-amber-400 text-base">📍</span>
+            <span>Rajendra Nagar, Nagpur</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 3. SERVICES & RATE CARD WITH PHOTOS (SECTION 1) -->
+    <section id="services" class="py-14 px-4 max-w-6xl mx-auto">
+      <div class="text-center mb-10">
+        <div class="inline-block px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-bold text-amber-300 uppercase tracking-widest mb-2">
+          Rate List & Menu
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black font-display text-white">
+          Hamari Services & Rate Card
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 max-w-md mx-auto">
+          High-quality men's grooming at affordable Nagpur prices. Har service me full hygiene aur perfection!
+        </p>
+      </div>
+
+      <!-- Services Grid (Populated dynamically with photos) -->
+      <div id="public-services-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered by JS with real photos (haircut.jpg, beard.jpg, massage.jpg, facial.jpg, etc.) -->
+        <div class="text-center py-8 text-slate-500 col-span-full">Services load ho rahi hain...</div>
+      </div>
+    </section>
+
+
+    <!-- 4. TRENDING HAIRSTYLES & SALON GALLERY (SECTION 2) -->
+    <section id="gallery" class="py-14 px-4 bg-slate-950/60 border-y border-amber-500/20">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+          <div class="inline-block px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-bold text-amber-300 uppercase tracking-widest mb-2">
+            Salon Gallery & Styles
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-black font-display text-white">
+            Haircut & Beard Style Showcase
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 max-w-md mx-auto">
+            Lakshya Mens Parlour me daily create hone wale stylish looks aur premium ambiance.
+          </p>
+        </div>
+
+        <!-- Gallery Photo Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          
+          <!-- Photo 1: Fade & Spikes -->
+          <div class="group relative rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/60 transition shadow-lg aspect-square">
+            <img src="/images/gallery-style.jpg" alt="Skin Fade Haircut" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 flex items-end p-2.5">
+              <span class="text-xs font-bold text-amber-300">Skin Fade & Spikes</span>
+            </div>
+          </div>
+
+          <!-- Photo 2: Sharp Beard Trim -->
+          <div class="group relative rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/60 transition shadow-lg aspect-square">
+            <img src="/images/beard.jpg" alt="Beard Shaping" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 flex items-end p-2.5">
+              <span class="text-xs font-bold text-amber-300">Beard Styling & Lineup</span>
+            </div>
+          </div>
+
+          <!-- Photo 3: Interior Hydraulic Chairs -->
+          <div class="group relative rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/60 transition shadow-lg aspect-square">
+            <img src="/images/interior-chairs.jpg" alt="Salon Hydraulic Chairs" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 flex items-end p-2.5">
+              <span class="text-xs font-bold text-amber-300">AC Salon Ambiance</span>
+            </div>
+          </div>
+
+          <!-- Photo 4: Hot Towel Shave -->
+          <div class="group relative rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/60 transition shadow-lg aspect-square">
+            <img src="/images/gallery-shave.jpg" alt="Hot Towel Razor Shave" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 flex items-end p-2.5">
+              <span class="text-xs font-bold text-amber-300">Hot Towel Shave</span>
+            </div>
+          </div>
+
+          <!-- Photo 5: Grooming Tools -->
+          <div class="group relative rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/60 transition shadow-lg aspect-square">
+            <img src="/images/tools.jpg" alt="Professional Barber Shears & Clippers" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 flex items-end p-2.5">
+              <span class="text-xs font-bold text-amber-300">Sanitized Tools</span>
+            </div>
+          </div>
+
+          <!-- Photo 6: Scalp Massage -->
+          <div class="group relative rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/60 transition shadow-lg aspect-square">
+            <img src="/images/massage.jpg" alt="Ayurvedic Head Massage" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 flex items-end p-2.5">
+              <span class="text-xs font-bold text-amber-300">Scalp Massage & Spa</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 5. VIP LOYALTY CLUB & PHONE LOOKUP (SECTION 3) -->
+    <section id="loyalty" class="py-14 px-4 max-w-4xl mx-auto">
+      <div class="glass-panel p-6 sm:p-10 border-2 border-amber-500/40 relative overflow-hidden shadow-2xl">
+        
+        <!-- Decorative Glow -->
+        <div class="absolute -right-20 -top-20 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="text-center mb-6">
+          <span class="inline-block px-3 py-1 rounded-full bg-amber-500 text-black text-xs font-black uppercase tracking-wider mb-2">
+            Nagpur Special Loyalty Offer
+          </span>
+          <h2 class="text-2xl sm:text-4xl font-black font-display text-white">
+            VIP Loyalty Rewards Card
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 mt-2">
+            Har baar baal katwane par stamp milta hai. Koi registration fee nahi!
+          </p>
+        </div>
+
+        <!-- 5-Stamp Progression Card -->
+        <div class="p-4 sm:p-6 rounded-2xl bg-slate-900/90 border border-amber-500/30 mb-8 shadow-inner">
+          <div class="grid grid-cols-5 gap-2 sm:gap-4 text-center">
+            
+            <div class="flex flex-col items-center">
+              <div class="stamp-slot completed text-sm sm:text-base font-black">1</div>
+              <span class="text-[10px] sm:text-xs text-amber-300 font-bold mt-1.5">1st Visit</span>
+              <span class="text-[9px] text-slate-400">Regular</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="stamp-slot completed text-sm sm:text-base font-black">2</div>
+              <span class="text-[10px] sm:text-xs text-amber-300 font-bold mt-1.5">2nd Visit</span>
+              <span class="text-[9px] text-slate-400">Regular</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="stamp-slot reward text-sm sm:text-base font-black animate-pulse">🎁</div>
+              <span class="text-[10px] sm:text-xs text-pink-400 font-black mt-1.5">3rd Visit</span>
+              <span class="text-[9px] font-bold text-pink-300 bg-pink-950/60 px-1 rounded">100% FREE!</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="stamp-slot completed text-sm sm:text-base font-black">4</div>
+              <span class="text-[10px] sm:text-xs text-amber-300 font-bold mt-1.5">4th Visit</span>
+              <span class="text-[9px] text-slate-400">Regular</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="stamp-slot reward text-sm sm:text-base font-black">🔥</div>
+              <span class="text-[10px] sm:text-xs text-amber-400 font-black mt-1.5">5th Visit</span>
+              <span class="text-[9px] font-bold text-amber-300 bg-amber-950/60 px-1 rounded">50% OFF!</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Interactive Grahak Phone Lookup -->
+        <div class="max-w-md mx-auto bg-slate-900 p-5 rounded-2xl border border-slate-800">
+          <h3 class="text-xs sm:text-sm font-bold text-white mb-2 flex items-center justify-center gap-1.5">
+            <i data-lucide="search" class="w-4 h-4 text-amber-400"></i>
+            <span>Pehle se grahak hain? Apne Stamps Check Karein:</span>
+          </h3>
+          <p class="text-[11px] text-slate-400 text-center mb-3">Apna 10-digit mobile number dalein aur personal booking link dekhein.</p>
+
+          <form onsubmit="handleCustomerLoyaltyLookup(event)" class="flex gap-2">
+            <input type="tel" id="lookup-phone-input" placeholder="e.g. 9823123456" maxlength="10" required class="flex-1 bg-slate-950 border border-slate-700 focus:border-amber-400 rounded-xl px-3 py-2 text-xs text-white tracking-wider font-mono">
+            <button type="submit" class="px-4 py-2 rounded-xl btn-gold text-xs font-bold shrink-0">
+              Check
+            </button>
+          </form>
+
+          <!-- Lookup Result Card -->
+          <div id="lookup-result-box" class="hidden mt-4 p-4 rounded-xl bg-slate-950 border border-amber-500/40 text-left">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- 6. LIVE ONLINE SLOT BOOKING ENGINE (SECTION 4) -->
+    <section id="booking" class="py-14 px-4 max-w-4xl mx-auto">
+      <div class="text-center mb-10">
+        <div class="inline-block px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-bold text-amber-300 uppercase tracking-widest mb-2">
+          Fast & Easy Online Booking
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-black font-display text-white">
+          Apna Haircut Slot Book Karein
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 max-w-md mx-auto">
+          2 Master Barbers ke saath common calendar. Time chunein, direct aaiye bina line lagaye!
+        </p>
+      </div>
+
+      <div class="glass-panel p-5 sm:p-8 border-2 border-amber-500/40 shadow-2xl">
+        <form id="public-booking-form" onsubmit="handlePublicBookingSubmit(event)" class="space-y-6">
+
+          <!-- Step 1: Select Date (Today + next 7 days) -->
+          <div>
+            <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center text-[10px] font-black">1</span>
+              <span>Tareekh Chunein (Select Date):</span>
+            </label>
+            <div id="public-date-selector" class="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Step 2: Select 30-min Time Slot -->
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <label class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center text-[10px] font-black">2</span>
+                <span>Time Slot Chunein (30 Min Slots):</span>
+              </label>
+              <span class="text-[10px] text-slate-400">Capacity: 2 Barbers per slot</span>
+            </div>
+
+            <!-- Slots Grid -->
+            <div id="public-slots-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+              <div class="col-span-full text-center py-6 text-slate-500 text-xs">Tareekh select karein...</div>
+            </div>
+            <input type="hidden" id="public-selected-slot" required>
+          </div>
+
+          <!-- Step 3: Choose Services -->
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <label class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center text-[10px] font-black">3</span>
+                <span>Services Select Karein:</span>
+              </label>
+              <div class="text-xs font-extrabold text-amber-400">
+                Total: <span id="public-total-price">₹0</span>
+              </div>
+            </div>
+
+            <div id="public-services-checkboxes" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Step 4: Customer Details -->
+          <div>
+            <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-full bg-amber-500 text-black flex items-center justify-center text-[10px] font-black">4</span>
+              <span>Aapka Naam & Mobile Number:</span>
+            </label>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Aapka Pura Naam *:</label>
+                <input type="text" id="public-cust-name" required placeholder="e.g. Rahul Sharma" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400">
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Mobile Number (10-digit) *:</label>
+                <input type="tel" id="public-cust-phone" required placeholder="9823012345" maxlength="10" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400 font-mono">
+              </div>
+            </div>
+
+            <div class="mt-2.5">
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Koi special style ya note? (Optional):</label>
+              <input type="text" id="public-cust-notes" placeholder="e.g. Skin fade with razor sharp beard" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button type="submit" id="btn-submit-public-book" class="w-full py-4 rounded-2xl btn-gold text-sm font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-2xl shadow-amber-500/30 hover:scale-[1.01] transition">
+              <i data-lucide="check-circle" class="w-5 h-5"></i>
+              <span>Confirm Appointment Slot (Free Booking)</span>
+            </button>
+            <p class="text-[11px] text-slate-400 text-center mt-2">
+              ✓ Koi payment pehle nahi deni. Payment dukan par kaam hone ke baad Cash ya UPI se dein.
+            </p>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+
+    <!-- 7. NAGPUR CUSTOMER REVIEWS (SECTION 5) -->
+    <section class="py-14 px-4 bg-slate-950/60 border-t border-amber-500/20">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+          <div class="inline-block px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-bold text-amber-300 uppercase tracking-widest mb-2">
+            Grahakon Ki Raye
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-black font-display text-white">
+            Nagpur Clients Ka Bharosa
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-2 max-w-md mx-auto">
+            Rajendra Nagar aur aas-paas ke 500+ regular grahak Lakshya Mens Parlour ko 4.9 star dete hain!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Review 1 -->
+          <div class="glass-card p-5 border border-slate-800 hover:border-amber-500/40 transition">
+            <div class="flex items-center gap-3 mb-3">
+              <img src="/images/avatar2.jpg" alt="Amit Verma" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500">
+              <div>
+                <div class="text-sm font-bold text-white">Amit Verma</div>
+                <div class="text-[11px] text-slate-400">Rajendra Nagar, Nagpur</div>
+              </div>
+            </div>
+            <div class="text-amber-400 text-xs mb-2">★★★★★</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              "Nagpur ka best salon! 3rd haircut sach me FREE mila. Barbers bohot experienced hain aur blades ekdum fresh sanitized use karte hain. 10/10!"
+            </p>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="glass-card p-5 border border-slate-800 hover:border-amber-500/40 transition">
+            <div class="flex items-center gap-3 mb-3">
+              <img src="/images/avatar1.jpg" alt="Rahul Sharma" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500">
+              <div>
+                <div class="text-sm font-bold text-white">Rahul Sharma</div>
+                <div class="text-[11px] text-slate-400">Dharampeth, Nagpur</div>
+              </div>
+            </div>
+            <div class="text-amber-400 text-xs mb-2">★★★★★</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              "Online booking system itna smooth hai ki dukan pahuchte hi bina wait kiye direct chair mil gayi. Haircut + Beard combo best rate me mila!"
+            </p>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="glass-card p-5 border border-slate-800 hover:border-amber-500/40 transition">
+            <div class="flex items-center gap-3 mb-3">
+              <img src="/images/avatar3.jpg" alt="Kunal Raut" class="w-12 h-12 rounded-full object-cover border-2 border-amber-500">
+              <div>
+                <div class="text-sm font-bold text-white">Kunal Raut</div>
+                <div class="text-[11px] text-slate-400">Bajaj Nagar, Nagpur</div>
+              </div>
+            </div>
+            <div class="text-amber-400 text-xs mb-2">★★★★★</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              "Ayurvedic head massage ekdum lajawab tha! AC salon aur relaxing ambiance. Pura stress gayab ho gaya. Highly recommended to everyone."
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 8. LOCATION, HOURS & CONTACT (SECTION 6) -->
+    <section id="location" class="py-14 px-4 max-w-5xl mx-auto">
+      <div class="glass-panel p-6 sm:p-10 border-2 border-amber-500/40 shadow-2xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          
+          <div>
+            <div class="inline-block px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-bold text-amber-300 uppercase tracking-widest mb-2">
+              Visit Us
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black font-display text-white mb-4">
+              Lakshya Mens Parlour
+            </h2>
+
+            <div class="space-y-4 text-xs sm:text-sm text-slate-300">
+              <div class="flex items-start gap-3">
+                <i data-lucide="map-pin" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <strong class="text-white">Pata (Address):</strong><br>
+                  Plot No. 12, Main Road, Rajendra Nagar, Nagpur, Maharashtra – 440036
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <i data-lucide="clock" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <strong class="text-white">Dukan Ka Time:</strong><br>
+                  Monday – Sunday: 10:00 AM – 8:00 PM<br>
+                  <span class="text-amber-400 font-semibold">(Mangalwar / Tuesday: Half Day / Off)</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <i data-lucide="phone" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+                <div>
+                  <strong class="text-white">Phone / WhatsApp:</strong><br>
+                  +91 98765 43210 / 0712-254890
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="https://maps.google.com/?q=Rajendra+Nagar+Nagpur" target="_blank" class="px-5 py-2.5 rounded-xl btn-gold text-xs font-extrabold flex items-center gap-1.5 shadow-lg">
+                <i data-lucide="navigation" class="w-4 h-4"></i>
+                <span>Open in Google Maps</span>
+              </a>
+              <a href="tel:09876543210" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-400 text-xs font-bold text-white flex items-center gap-1.5">
+                <i data-lucide="phone-call" class="w-4 h-4 text-emerald-400"></i>
+                <span>Direct Call</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Salon Photo Preview Card -->
+          <div class="relative rounded-2xl overflow-hidden border border-amber-500/40 shadow-xl h-64 sm:h-72">
+            <img src="/images/shop-front.jpg" alt="Lakshya Mens Parlour Nagpur" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4">
+              <div>
+                <span class="text-amber-300 font-extrabold text-sm">LAKSHYA MENS PARLOUR</span>
+                <p class="text-slate-300 text-xs">Rajendra Nagar, Nagpur</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 9. WEBSITE FOOTER -->
+    <footer class="border-t border-slate-800 bg-slate-950/90 py-10 px-4">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        
+        <div>
+          <div class="text-base font-black font-display text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-amber-500">
+            LAKSHYA MENS PARLOUR (लक्ष्य मेन्स पार्लर)
+          </div>
+          <p class="text-xs text-slate-400 mt-1">
+            Rajendra Nagar, Nagpur • Premier Men's Hair & Grooming Salon
+          </p>
+        </div>
+
+        <div class="flex items-center gap-4 text-xs font-bold text-slate-400">
+          <a href="#services" class="hover:text-amber-400">Services</a>
+          <a href="#booking" class="hover:text-amber-400">Book Slot</a>
+          <a href="#loyalty" class="hover:text-amber-400">Loyalty Club</a>
+          <a href="#location" class="hover:text-amber-400">Location</a>
+        </div>
+
+        <div>
+          <button onclick="handleOwnerNavClick()" class="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-amber-500/30 text-amber-300 hover:text-white text-xs font-bold flex items-center gap-1.5 mx-auto sm:mx-0">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            <span>Owner / Staff Login 🔐</span>
+          </button>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ============================================================
+       ============================================================
+       B. OWNER DASHBOARD PORTAL (SHOWN UPON PIN UNLOCK)
+       Full Due List, Khata, Real-time Bookings, Hisaab, Settings
+       ============================================================
+       ============================================================ -->
+  <div id="owner-app" class="max-w-2xl mx-auto min-h-screen pb-24 hidden app-container">
+
+    <!-- Top Sticky Header with Switch-to-Website Button -->
+    <header class="sticky top-0 z-30 bg-[#080B0F]/95 backdrop-blur-md border-b-2 border-amber-500/30 px-4 py-3 shadow-xl">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center text-xl text-black font-black shadow-md shadow-amber-500/20 shrink-0">
+            💈
+          </div>
+          <div>
+            <h1 class="text-base sm:text-lg font-black font-display text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-amber-400 to-amber-500 leading-tight">
+              LAKSHYA MENS PARLOUR
+            </h1>
+            <div class="text-[10px] text-amber-300 font-medium flex items-center gap-1.5 flex-wrap">
+              <span>Owner Manager</span>
+              <span>•</span>
+              <span class="text-slate-400">Rajendra Nagar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Controls & Back to Website -->
+        <div class="flex items-center gap-2">
+          <!-- Back to Public Website Button -->
+          <button onclick="showPublicWebsite()" title="View Public Website" class="px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/40 text-amber-300 hover:bg-amber-500 hover:text-black text-[11px] font-bold flex items-center gap-1 transition">
+            <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+            <span class="hidden xs:inline">Website</span>
+          </button>
+
+          <!-- Notification Bell with pulse -->
+          <div id="new-booking-badge-container" class="relative cursor-pointer" onclick="switchTab('tab-bookings')">
+            <button class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-amber-400 flex items-center justify-center">
+              <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+            </button>
+            <span id="new-booking-badge" class="hidden absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-500 text-black text-[9px] font-black flex items-center justify-center pulse-badge">
+              1
+            </span>
+          </div>
+
+          <!-- Sound alert toggle -->
+          <button id="btn-sound-toggle" onclick="toggleSoundAlert()" title="Toggle Sound Chime" class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-amber-400 flex items-center justify-center">
+            <i id="sound-icon" data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+          </button>
+
+          <!-- Lock Button -->
+          <button onclick="lockOwnerPortal()" title="Lock Screen" class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-red-400 flex items-center justify-center">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Real-time Banner when NEW booking arrives -->
+      <div id="realtime-booking-alert" class="hidden mt-2 p-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-extrabold text-xs flex items-center justify-between shadow-xl animate-bounce">
+        <div class="flex items-center gap-2">
+          <span class="text-base">🔔</span>
+          <span id="realtime-alert-msg">Naya Online Booking Aaya Hai!</span>
+        </div>
+        <button onclick="dismissNewAlert()" class="bg-black text-amber-300 text-[10px] px-2.5 py-1 rounded-lg font-bold">
+          Dekhein
+        </button>
+      </div>
+    </header>
+
+    <!-- Visual Salon Ambiance Banner on Dashboard -->
+    <div class="px-4 pt-3">
+      <div class="relative rounded-2xl overflow-hidden border border-amber-500/30 shadow-lg h-24 sm:h-28">
+        <img src="/images/interior-chairs.jpg" alt="Lakshya Salon Interior" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#080B0F]/90 via-[#080B0F]/60 to-transparent flex items-center px-4">
+          <div>
+            <div class="text-[10px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 live-indicator"></span>
+              2 Barbers Active (1 Common Calendar)
+            </div>
+            <div class="text-sm sm:text-base font-extrabold text-white mt-0.5 font-display">
+              Rajendra Nagar Premier Grooming
+            </div>
+            <div class="text-[10px] text-slate-300 mt-0.5 flex items-center gap-2">
+              <span id="header-date-text">Loading date...</span>
+              <span>•</span>
+              <span class="text-amber-300">Har 3rd Cut Free Loyalty</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats Bar (Due today, Overdue, Bookings, Income) -->
+    <section class="px-4 pt-3 pb-1">
+      <div class="grid grid-cols-4 gap-2">
+        <div onclick="switchTab('tab-due', 'due-today')" class="glass-card p-2.5 cursor-pointer hover:border-amber-400 transition text-center">
+          <div class="text-[10px] text-slate-400 font-semibold truncate">Aaj Due</div>
+          <div id="stat-due-today" class="text-base font-extrabold text-amber-400 font-display mt-0.5">0</div>
+          <div class="text-[9px] text-amber-400/80">Aane wale</div>
+        </div>
+
+        <div onclick="switchTab('tab-due', 'overdue')" class="glass-card p-2.5 cursor-pointer hover:border-red-400 transition text-center">
+          <div class="text-[10px] text-slate-400 font-semibold truncate">Late Hue</div>
+          <div id="stat-overdue" class="text-base font-extrabold text-red-400 font-display mt-0.5">0</div>
+          <div class="text-[9px] text-red-400/80">Remind karein</div>
+        </div>
+
+        <div onclick="switchTab('tab-bookings')" class="glass-card p-2.5 cursor-pointer hover:border-blue-400 transition text-center">
+          <div class="text-[10px] text-slate-400 font-semibold truncate">Aaj Slots</div>
+          <div id="stat-bookings" class="text-base font-extrabold text-blue-400 font-display mt-0.5">0</div>
+          <div class="text-[9px] text-blue-400/80">Booked</div>
+        </div>
+
+        <div onclick="switchTab('tab-khata')" class="glass-card p-2.5 cursor-pointer hover:border-emerald-400 transition text-center">
+          <div class="text-[10px] text-slate-400 font-semibold truncate">Aaj Kamai</div>
+          <div id="stat-income" class="text-base font-extrabold text-emerald-400 font-display mt-0.5">₹0</div>
+          <div class="text-[9px] text-emerald-400/80">Hisaab</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Navigation Tabs Header -->
+    <div class="px-4 pt-2">
+      <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 overflow-x-auto scrollbar-none text-xs font-semibold">
+        <button id="nav-tab-due" onclick="switchTab('tab-due')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 text-black font-bold whitespace-nowrap">
+          <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+          <span>Due List</span>
+        </button>
+        <button id="nav-tab-bookings" onclick="switchTab('tab-bookings')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white whitespace-nowrap">
+          <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+          <span>Bookings</span>
+        </button>
+        <button id="nav-tab-customers" onclick="switchTab('tab-customers')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white whitespace-nowrap">
+          <i data-lucide="users" class="w-3.5 h-3.5"></i>
+          <span>Grahak (Khata)</span>
+        </button>
+        <button id="nav-tab-services" onclick="switchTab('tab-services')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white whitespace-nowrap">
+          <i data-lucide="scissors" class="w-3.5 h-3.5"></i>
+          <span>Price List</span>
+        </button>
+        <button id="nav-tab-khata" onclick="switchTab('tab-khata')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white whitespace-nowrap">
+          <i data-lucide="indian-rupee" class="w-3.5 h-3.5"></i>
+          <span>Hisaab / Kharcha</span>
+        </button>
+        <button id="nav-tab-settings" onclick="switchTab('tab-settings')" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white whitespace-nowrap">
+          <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+          <span>Settings & Backup</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Views Container -->
+    <main class="px-4 py-3 space-y-4">
+
+      <!-- ============================================================
+           TAB 1: DUE LIST (HOME SCREEN: AAJ AANE WALE & LATE HO GAYE)
+           ============================================================ -->
+      <section id="tab-due" class="tab-content space-y-3">
+        <!-- Sub-Toggle: Aaj Aane Wale vs Late Ho Gaye -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+            <button id="btn-toggle-due-today" onclick="toggleDueSubView('due-today')" class="px-3 py-1.5 rounded-lg bg-amber-500 text-black font-bold flex items-center gap-1.5 transition">
+              <span>Aaj Aane Wale</span>
+              <span id="badge-due-today-count" class="bg-black text-amber-300 px-1.5 py-0.2 rounded-full text-[10px]">0</span>
+            </button>
+            <button id="btn-toggle-overdue" onclick="toggleDueSubView('overdue')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white font-semibold flex items-center gap-1.5 transition">
+              <span>Late Ho Gaye</span>
+              <span id="badge-overdue-count" class="bg-red-500/30 text-red-300 px-1.5 py-0.2 rounded-full text-[10px]">0</span>
+            </button>
+          </div>
+
+          <button onclick="openAddCustomerModal()" class="py-1.5 px-3 rounded-xl btn-gold text-xs font-bold flex items-center gap-1.5 shadow-md">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+            <span>Naya Grahak</span>
+          </button>
+        </div>
+
+        <!-- Reminder Template Info Bar -->
+        <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between text-xs text-slate-300">
+          <div class="flex items-center gap-2 truncate">
+            <span class="text-amber-400">💡</span>
+            <span class="truncate text-[11px]">Tap <strong>WhatsApp Reminder</strong> to send instant 1-click personal booking link. (100% Free!)</span>
+          </div>
+          <button onclick="switchTab('tab-settings')" class="text-amber-400 hover:underline shrink-0 text-[11px] font-semibold ml-2">Edit Msg</button>
+        </div>
+
+        <!-- Aaj Aane Wale Container -->
+        <div id="due-today-container" class="space-y-2.5">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Late Ho Gaye Container -->
+        <div id="overdue-container" class="space-y-2.5 hidden">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 2: BOOKINGS MANAGER (TODAY & UPCOMING)
+           ============================================================ -->
+      <section id="tab-bookings" class="tab-content hidden space-y-3">
+        <!-- Sub-filters & Add Walk-in -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+            <button id="btn-booking-filter-today" onclick="filterBookings('today')" class="px-3 py-1 rounded-lg bg-amber-500 text-black font-bold">
+              Aaj Ke Slots
+            </button>
+            <button id="btn-booking-filter-upcoming" onclick="filterBookings('upcoming')" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white font-semibold">
+              Aane Wale
+            </button>
+            <button id="btn-booking-filter-all" onclick="filterBookings('all')" class="px-3 py-1 rounded-lg text-slate-400 hover:text-white font-semibold">
+              Sabhi
+            </button>
+          </div>
+
+          <button onclick="openWalkinBookingModal()" class="py-1.5 px-3 rounded-xl btn-gold text-xs font-bold flex items-center gap-1.5">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+            <span>Walk-in / Phone Book</span>
+          </button>
+        </div>
+
+        <!-- Capacity Indicator Badge -->
+        <div class="p-2.5 rounded-xl bg-amber-950/20 border border-amber-500/30 flex items-center justify-between text-xs text-amber-200">
+          <div class="flex items-center gap-2">
+            <span class="text-amber-400">💈</span>
+            <span>Shop Capacity: <strong>2 Barbers</strong> (Max 2 bookings per 30-min slot)</span>
+          </div>
+          <span class="text-[10px] bg-slate-900 px-2 py-0.5 rounded text-amber-400 font-mono">1 Common Calendar</span>
+        </div>
+
+        <!-- Bookings List -->
+        <div id="bookings-list-container" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 3: CUSTOMER DATABASE (SEARCH, CRUD, PROFILES)
+           ============================================================ -->
+      <section id="tab-customers" class="tab-content hidden space-y-3">
+        <div class="flex items-center gap-2">
+          <div class="relative flex-1">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+            <input type="text" id="customer-search-input" oninput="searchCustomers(this.value)" placeholder="Search name or mobile number..." class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+          </div>
+          <button onclick="openAddCustomerModal()" class="py-2 px-3.5 rounded-xl btn-gold text-xs font-bold flex items-center gap-1.5 shrink-0">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+            <span>Add Grahak</span>
+          </button>
+        </div>
+
+        <!-- Customer List Container -->
+        <div id="customer-list-container" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 4: SERVICES & PRICE LIST
+           ============================================================ -->
+      <section id="tab-services" class="tab-content hidden space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-bold text-white font-display">Rate List / Services</h2>
+            <p class="text-[11px] text-slate-400">Ye prices grahakon ko unke booking page par dikhte hain</p>
+          </div>
+          <button onclick="openAddServiceModal()" class="py-1.5 px-3 rounded-xl btn-gold text-xs font-bold flex items-center gap-1">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span>Nayi Service</span>
+          </button>
+        </div>
+
+        <div id="services-list-container" class="space-y-2">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 5: HISAAB / INCOME & EXPENSES
+           ============================================================ -->
+      <section id="tab-khata" class="tab-content hidden space-y-3">
+        <!-- Daily / Monthly Summary Cards -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <div class="glass-card p-3 border-amber-500/30">
+            <div class="text-[10px] text-slate-400 font-semibold">Aaj Ki Kul Kamai (Visits)</div>
+            <div id="khata-today-income" class="text-xl font-black text-amber-400 font-display mt-0.5">₹0</div>
+            <div id="khata-today-count" class="text-[10px] text-slate-400 mt-0.5">0 grahak attend kiye</div>
+          </div>
+          <div class="glass-card p-3 border-emerald-500/30">
+            <div class="text-[10px] text-slate-400 font-semibold">Is Mahine Ki Kamai</div>
+            <div id="khata-month-income" class="text-xl font-black text-emerald-400 font-display mt-0.5">₹0</div>
+            <div id="khata-month-count" class="text-[10px] text-slate-400 mt-0.5">0 total visits</div>
+          </div>
+        </div>
+
+        <!-- Expense and Net Profit Overview -->
+        <div class="glass-card p-3 flex items-center justify-between">
+          <div>
+            <div class="text-[10px] text-slate-400">Aaj Ka Kharcha (Expenses)</div>
+            <div id="khata-today-expense" class="text-sm font-bold text-red-400 font-display">₹0</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-slate-400">Aaj Ka Net Munafa</div>
+            <div id="khata-today-net" class="text-base font-extrabold text-emerald-400 font-display">₹0</div>
+          </div>
+          <button onclick="openAddExpenseModal()" class="py-1 px-2.5 rounded-lg bg-red-600/80 hover:bg-red-500 text-white text-[11px] font-bold">
+            + Kharcha Likhein
+          </button>
+        </div>
+
+        <!-- Busiest Hours Widget -->
+        <div class="glass-panel p-3">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="trending-up" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Busiest Hours (Sabse Zyada Bheed Ka Time)</span>
+            </h3>
+            <span class="text-[10px] text-slate-400">Slot Trends</span>
+          </div>
+          <div id="busiest-hours-container" class="space-y-1.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Recent Visits History -->
+        <div>
+          <h3 class="text-xs font-bold text-slate-300 mb-2">Aaj Ki Recent Visits / Haircuts</h3>
+          <div id="recent-visits-container" class="space-y-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           TAB 6: SETTINGS & DATABASE BACKUP
+           ============================================================ -->
+      <section id="tab-settings" class="tab-content hidden space-y-4">
+        <!-- Shop Details Form -->
+        <div class="glass-panel p-4 space-y-3">
+          <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Dukan Ki Jankari (Shop Info)</h3>
+          
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Dukan Ka Naam:</label>
+            <input type="text" id="setting-shop-name" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Pata (Rajendra Nagar, Nagpur):</label>
+            <input type="text" id="setting-shop-address" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp / Calling Number:</label>
+            <input type="text" id="setting-shop-phone" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Opening Time:</label>
+              <input type="time" id="setting-open-time" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Closing Time:</label>
+              <input type="time" id="setting-close-time" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Slot Capacity (Barbers):</label>
+              <input type="number" id="setting-capacity" min="1" max="5" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold text-amber-400">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Slot Duration (Min):</label>
+              <input type="number" id="setting-slot-duration" min="15" max="60" step="5" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Active Offer / Announcement:</label>
+            <input type="text" id="setting-active-offer" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+
+          <button onclick="saveShopSettings()" class="w-full py-2.5 rounded-xl btn-gold text-xs font-bold">
+            Shop Settings Save Karein
+          </button>
+        </div>
+
+        <!-- WhatsApp Reminder Message Template -->
+        <div class="glass-panel p-4 space-y-3">
+          <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">WhatsApp Reminder Message Template</h3>
+          <p class="text-[11px] text-slate-400">Available variables: {name}, {days}, {link}, {shop}</p>
+          <textarea id="setting-reminder-template" rows="3" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white"></textarea>
+          <button onclick="saveReminderTemplate()" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-xs font-bold">
+            Message Template Update Karein
+          </button>
+        </div>
+
+        <!-- Change Owner PIN -->
+        <div class="glass-panel p-4 space-y-3">
+          <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Change Owner Login PIN</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Purana PIN:</label>
+              <input type="password" id="input-old-pin" maxlength="6" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">Naya PIN (Min 4 Digit):</label>
+              <input type="password" id="input-new-pin" maxlength="6" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            </div>
+          </div>
+          <button onclick="changeOwnerPin()" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold">
+            PIN Update Karein
+          </button>
+        </div>
+
+        <!-- Backup & CSV Export (100% Free Daily Backup) -->
+        <div class="glass-panel p-4 space-y-3">
+          <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Database Backup & CSV Export</h3>
+          <p class="text-[11px] text-slate-400">Daily hisaab aur grahak data apne phone ya computer me save karein.</p>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="downloadExport('/api/export/customers.csv')" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 font-semibold flex items-center justify-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Grahak List CSV</span>
+            </button>
+            <button onclick="downloadExport('/api/export/bookings.csv')" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 font-semibold flex items-center justify-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-blue-400"></i>
+              <span>Bookings CSV</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="downloadExport('/api/export/income.csv')" class="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-200 font-semibold flex items-center justify-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Kamai (Income) CSV</span>
+            </button>
+            <button onclick="downloadExport('/api/export/backup.db')" class="py-2.5 px-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-xs text-amber-300 font-bold flex items-center justify-center gap-1.5">
+              <i data-lucide="database" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>Full SQLite DB Backup</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- ============================================================
+       MODALS: ADD/EDIT CUSTOMER, VISIT DONE, WALKIN BOOKING, ETC.
+       ============================================================ -->
+
+  <!-- 1. ADD / EDIT CUSTOMER MODAL -->
+  <div id="modal-customer" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-[#121721] border border-amber-500/50 rounded-2xl max-w-sm w-full p-5 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+        <h3 id="modal-customer-title" class="text-sm font-bold text-white font-display">Naya Grahak Jodein</h3>
+        <button onclick="closeCustomerModal()" class="text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+      </div>
+
+      <form id="customer-form" onsubmit="handleCustomerSubmit(event)" class="space-y-3">
+        <input type="hidden" id="cust-edit-id">
+
+        <!-- Photo & Avatar Preview -->
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <img id="cust-form-preview" src="/images/avatar1.jpg" alt="Preview" class="w-14 h-14 rounded-full object-cover border-2 border-amber-500">
+          </div>
+          <div class="flex-1">
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Photo Upload (Camera/Gallery):</label>
+            <input type="file" id="cust-input-photo" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-amber-500 file:text-black">
+          </div>
+        </div>
+
+        <!-- Avatar Presets -->
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-300 mb-1">Ya Preset Avatar Chunein:</label>
+          <div class="flex gap-2">
+            <img src="/images/avatar1.jpg" onclick="selectAvatarPreset('/images/avatar1.jpg')" class="w-8 h-8 rounded-full border border-slate-700 cursor-pointer avatar-preset-opt hover:scale-110 transition">
+            <img src="/images/avatar2.jpg" onclick="selectAvatarPreset('/images/avatar2.jpg')" class="w-8 h-8 rounded-full border border-slate-700 cursor-pointer avatar-preset-opt hover:scale-110 transition">
+            <img src="/images/avatar3.jpg" onclick="selectAvatarPreset('/images/avatar3.jpg')" class="w-8 h-8 rounded-full border border-slate-700 cursor-pointer avatar-preset-opt hover:scale-110 transition">
+            <img src="/images/avatar4.jpg" onclick="selectAvatarPreset('/images/avatar4.jpg')" class="w-8 h-8 rounded-full border border-slate-700 cursor-pointer avatar-preset-opt hover:scale-110 transition">
+            <img src="/images/avatar5.jpg" onclick="selectAvatarPreset('/images/avatar5.jpg')" class="w-8 h-8 rounded-full border border-slate-700 cursor-pointer avatar-preset-opt hover:scale-110 transition">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Grahak Ka Naam *:</label>
+          <input type="text" id="cust-input-name" required placeholder="e.g. Rahul Sharma" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Mobile Number (10 Digit) *:</label>
+          <input type="tel" id="cust-input-phone" required placeholder="9823012345" maxlength="10" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 font-mono">
+        </div>
+
+        <!-- Agla Haircut Kitne Din Baad -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Agla Haircut Kitne Din Baad (Default Cycle)?</label>
+          <div class="grid grid-cols-4 gap-1.5 text-xs text-center">
+            <button type="button" onclick="setCycleDays(20)" data-days="20" class="cycle-pill py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300">20 Din</button>
+            <button type="button" onclick="setCycleDays(25)" data-days="25" class="cycle-pill py-2 rounded-xl border border-amber-400 bg-amber-500 text-black font-extrabold">25 Din</button>
+            <button type="button" onclick="setCycleDays(30)" data-days="30" class="cycle-pill py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300">30 Din</button>
+            <button type="button" onclick="setCycleDays(40)" data-days="40" class="cycle-pill py-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300">40 Din</button>
+          </div>
+          <input type="hidden" id="cust-input-cycle" value="25">
+        </div>
+
+        <!-- Optional: Aaj 1st Visit Ho Gaya -->
+        <div id="first-visit-option-container" class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="cust-check-first-visit" checked class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400 bg-slate-900 border-slate-700">
+            <span class="text-xs font-bold text-amber-300">Aaj 1st visit / haircut ho gaya hai? (Mark Visit)</span>
+          </label>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Haircut Style / Notes:</label>
+          <input type="text" id="cust-input-notes" placeholder="e.g. Fade cut, short beard, hot water shave" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeCustomerModal()" class="flex-1 py-2 text-xs rounded-xl bg-slate-800 text-slate-300 font-semibold">Cancel</button>
+          <button type="submit" id="btn-submit-customer" class="flex-1 py-2 text-xs rounded-xl btn-gold font-bold">Grahak Save Karein</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 2. NEW CUSTOMER ADDED SUCCESS MODAL -->
+  <div id="modal-customer-success" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="glass-panel p-6 max-w-sm w-full text-center border-2 border-amber-500 shadow-2xl relative">
+      <div class="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-3 border border-emerald-500/40">
+        ✓
+      </div>
+      <h3 class="text-base font-black text-white font-display">Grahak Safaltapoorvak Jud Gaya!</h3>
+      <p id="success-cust-name" class="text-xs font-bold text-amber-400 mt-1">Rahul Sharma</p>
+      
+      <div class="my-4 p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-left">
+        <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">Customer Personal Booking Link:</div>
+        <div id="success-cust-link" class="text-xs text-amber-300 font-mono break-all select-all">http://...</div>
+      </div>
+
+      <div class="space-y-2">
+        <a id="btn-success-whatsapp" href="#" target="_blank" class="w-full py-2.5 rounded-xl btn-whatsapp text-xs font-bold flex items-center justify-center gap-1.5 shadow">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>WhatsApp Par Link Bhejein</span>
+        </a>
+
+        <button onclick="copySuccessLink()" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center justify-center gap-1">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <span>Copy Personal Link</span>
+        </button>
+
+        <button onclick="viewCustomerInKhata()" class="w-full py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-400 text-xs font-bold">
+          Khata Me Dekhein
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 3. VISIT DONE / PAYMENT RECORD MODAL -->
+  <div id="modal-visit" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-[#121721] border border-amber-500/50 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+        <div>
+          <h3 class="text-sm font-bold text-white font-display">Visit Done & Hisaab Record</h3>
+          <p id="visit-modal-customer-name" class="text-xs text-amber-400 font-semibold mt-0.5">Rahul Sharma</p>
+        </div>
+        <button onclick="closeVisitModal()" class="text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+      </div>
+
+      <div id="visit-loyalty-badge-container" class="hidden mb-3 p-3 rounded-xl bg-gradient-to-r from-purple-900/60 to-pink-900/60 border border-pink-500 text-center animate-pulse">
+        <span id="visit-loyalty-badge-text" class="text-xs font-black text-pink-300">🎉 3rd Visit Done: FREE HAIRCUT DUE!</span>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Kaunsi Services Di Gayi?</label>
+          <div id="visit-services-selector" class="grid grid-cols-2 gap-1.5 max-h-36 overflow-y-auto pr-1">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Total Bill (₹):</label>
+            <input type="number" id="visit-total-amount" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-emerald-400">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Discount (₹):</label>
+            <input type="number" id="visit-discount-amount" value="0" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-pink-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-300 mb-1">Payment Mode:</label>
+          <div class="grid grid-cols-3 gap-1.5 text-xs text-center">
+            <button type="button" onclick="setPayMode('Cash')" id="pay-mode-cash" class="py-1.5 rounded-lg border border-amber-400 bg-amber-500 text-black font-bold">Cash</button>
+            <button type="button" onclick="setPayMode('UPI')" id="pay-mode-upi" class="py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-300 font-semibold">UPI</button>
+            <button type="button" onclick="setPayMode('Free')" id="pay-mode-free" class="py-1.5 rounded-lg border border-slate-800 bg-slate-900 text-slate-300 font-semibold">Free Reward</button>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeVisitModal()" class="flex-1 py-2 text-xs rounded-xl bg-slate-800 text-slate-300 font-semibold">Cancel</button>
+          <button type="button" onclick="confirmVisitDone()" class="flex-1 py-2 text-xs rounded-xl btn-gold font-bold">Visit Done ✓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 4. WALKIN / PHONE BOOKING MODAL -->
+  <div id="modal-walkin" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-[#121721] border border-amber-500/50 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+        <h3 class="text-sm font-bold text-white font-display">Walk-in Ya Phone Booking Add Karein</h3>
+        <button onclick="closeWalkinModal()" class="text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+      </div>
+
+      <form id="walkin-form" onsubmit="submitWalkinBooking(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Grahak Chunein Ya Naya Naam Dalein *:</label>
+          <input type="text" id="walkin-cust-name" required placeholder="Grahak ka naam" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Mobile Number (10 Digit):</label>
+          <input type="tel" id="walkin-cust-phone" placeholder="9823012345" maxlength="10" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Tareekh (Date):</label>
+            <input type="date" id="walkin-date" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Slot Time:</label>
+            <select id="walkin-time" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Services:</label>
+          <div id="walkin-services-container" class="grid grid-cols-2 gap-1 max-h-28 overflow-y-auto pr-1">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeWalkinModal()" class="flex-1 py-2 text-xs rounded-xl bg-slate-800 text-slate-300 font-semibold">Cancel</button>
+          <button type="submit" class="flex-1 py-2 text-xs rounded-xl btn-gold font-bold">Booking Confirm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 5. EDIT SERVICE MODAL -->
+  <div id="modal-service" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-[#121721] border border-amber-500/50 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+        <h3 id="modal-service-title" class="text-sm font-bold text-white font-display">Service Edit Karein</h3>
+        <button onclick="closeServiceModal()" class="text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+      </div>
+
+      <form id="service-form" onsubmit="submitServiceForm(event)" class="space-y-3">
+        <input type="hidden" id="svc-edit-id">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Service Ka Naam (English) *:</label>
+          <input type="text" id="svc-name" required placeholder="e.g. Regular Haircut" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Naam (Hindi):</label>
+          <input type="text" id="svc-name-hi" placeholder="e.g. सादा बाल कटिंग" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Price (₹) *:</label>
+            <input type="number" id="svc-price" required placeholder="100" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white font-bold text-amber-400">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Duration (Min):</label>
+            <input type="number" id="svc-duration" value="25" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Category:</label>
+          <select id="svc-category" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white">
+            <option value="Hair">Hair (बाल)</option>
+            <option value="Beard">Beard (दाढ़ी)</option>
+            <option value="Spa">Spa & Massage</option>
+            <option value="Facial">Facial & D-Tan</option>
+            <option value="Combo">Combo Package</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Description:</label>
+          <input type="text" id="svc-desc" placeholder="Brief detail about service" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white">
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeServiceModal()" class="flex-1 py-2 text-xs rounded-xl bg-slate-800 text-slate-300 font-semibold">Cancel</button>
+          <button type="submit" class="flex-1 py-2 text-xs rounded-xl btn-gold font-bold">Save Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 6. ADD EXPENSE MODAL -->
+  <div id="modal-expense" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-[#121721] border border-amber-500/50 rounded-2xl max-w-sm w-full p-5 shadow-2xl">
+      <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+        <h3 class="text-sm font-bold text-white font-display">Dukan Ka Kharcha Likhein</h3>
+        <button onclick="closeExpenseModal()" class="text-slate-400 hover:text-white text-xl font-bold">&times;</button>
+      </div>
+
+      <form id="expense-form" onsubmit="submitExpenseForm(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Category:</label>
+          <select id="exp-category" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+            <option value="Blades & Razors">Blades & Razors</option>
+            <option value="Tea & Refreshments">Chai & Nashta</option>
+            <option value="D-Tan & Creams">Creams, D-Tan & Wax</option>
+            <option value="Shampoo & Oil">Shampoo, Aftershave & Oil</option>
+            <option value="Electricity & Shop">Electricity / Salon Repair</option>
+            <option value="Other">Other Expenses</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Amount (₹) *:</label>
+          <input type="number" id="exp-amount" required placeholder="50" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-red-400">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Detail / Note:</label>
+          <input type="text" id="exp-notes" placeholder="e.g. SuperMax blade pack of 50" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+
+        <div class="flex gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeExpenseModal()" class="flex-1 py-2 text-xs rounded-xl bg-slate-800 text-slate-300 font-semibold">Cancel</button>
+          <button type="submit" class="flex-1 py-2 text-xs rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold">Kharcha Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 7. DIGITAL BOOKING TICKET MODAL (CONFIRMATION FOR PUBLIC SITE) -->
+  <div id="modal-ticket" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
+    <div class="bg-[#111622] border-2 border-amber-500 rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl relative overflow-hidden">
+      
+      <!-- Top Crest & Confirmation -->
+      <div class="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-2 border border-emerald-500/40">
+        ✓
+      </div>
+      <div class="text-[11px] font-extrabold text-amber-400 uppercase tracking-widest">
+        Slot Confirmed!
+      </div>
+      <h3 class="text-xl font-black font-display text-white mt-0.5">
+        Lakshya Mens Parlour
+      </h3>
+      <p class="text-xs text-slate-400">Rajendra Nagar, Nagpur</p>
+
+      <!-- Ticket Body -->
+      <div class="my-4 p-4 rounded-2xl bg-slate-950 border border-amber-500/30 text-left space-y-2">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <span class="text-[10px] text-slate-400 uppercase font-bold">Booking Code:</span>
+          <span id="ticket-booking-code" class="text-base font-black font-mono text-amber-300">LAK-8831</span>
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-slate-400">Grahak:</span>
+          <span id="ticket-cust-name" class="font-bold text-white">Rahul Sharma</span>
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-slate-400">Tareekh:</span>
+          <span id="ticket-date" class="font-bold text-white">2026-11-15</span>
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-slate-400">Time Slot:</span>
+          <span id="ticket-time" class="font-bold text-amber-400">05:00 PM</span>
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-slate-400">Services:</span>
+          <span id="ticket-services" class="font-bold text-white text-right truncate max-w-[160px]">Haircut + Beard</span>
+        </div>
+        <div class="flex justify-between items-center text-xs border-t border-slate-800 pt-1.5 font-bold">
+          <span class="text-slate-300">Estimated Total:</span>
+          <span id="ticket-amount" class="text-emerald-400 font-extrabold">₹130</span>
+        </div>
+      </div>
+
+      <!-- Secret Personal Link -->
+      <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left mb-4">
+        <div class="text-[10px] font-bold text-amber-300 uppercase tracking-wide">Aapka Secret Personal Link:</div>
+        <p class="text-[10px] text-slate-400 mt-0.5">Is link se aap bina login kiye loyalty stamps dekh sakte hain:</p>
+        <div class="mt-1 flex items-center gap-1.5">
+          <a id="ticket-personal-link" href="#" target="_blank" class="text-xs text-amber-300 font-bold underline truncate flex-1">
+            Open My Secret Link
+          </a>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="closeTicketModal()" class="w-full py-2.5 rounded-xl btn-gold text-xs font-black uppercase tracking-wider">
+          Theek Hai, Done!
+        </button>
+        <a href="https://maps.google.com/?q=Rajendra+Nagar+Nagpur" target="_blank" class="w-full py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300 flex items-center justify-center gap-1.5">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Google Maps Directions</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Owner Dashboard App Logic -->
+  <script src="/js/app.js"></script>
+</body>
+</html>

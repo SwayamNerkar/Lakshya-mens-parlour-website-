@@ -1,0 +1,287 @@
+/* ============================================================
+   LAKSHYA MENS PARLOUR - LUXURY MEN'S SALON STYLING
+   Rajendra Nagar, Nagpur
+   Palette: Deep Charcoal/Obsidian with Rich Amber Gold Accents
+   ============================================================ */
+
+:root {
+  --bg-dark: #090c10;
+  --bg-card: #121721;
+  --bg-card-hover: #18202e;
+  --bg-card-elevated: #1e2638;
+  --gold-primary: #d4af37;
+  --gold-bright: #f59e0b;
+  --gold-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --gold-glow: rgba(245, 158, 11, 0.28);
+  --gold-subtle: rgba(212, 175, 55, 0.12);
+  --border-gold: rgba(245, 158, 11, 0.22);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-gold: #fbbf24;
+  --whatsapp-green: #25d366;
+  --danger-red: #ef4444;
+  --success-green: #10b981;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090c10;
+}
+::-webkit-scrollbar-thumb {
+  background: #273042;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
+}
+
+/* Glassmorphism Card */
+.glass-panel {
+  background: rgba(18, 23, 33, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+  border-radius: 1rem;
+}
+
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.875rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4), 0 0 15px -3px var(--gold-glow);
+}
+
+/* Luxury Gold Button */
+.btn-gold {
+  background: var(--gold-gradient);
+  color: #0b0e14;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.39);
+  transition: all 0.2s ease;
+}
+.btn-gold:hover:not(:disabled) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+}
+.btn-gold:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* WhatsApp Button */
+.btn-whatsapp {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s ease;
+}
+.btn-whatsapp:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+}
+
+/* Pulsing Badge for NEW Bookings */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+    transform: scale(1.03);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    transform: scale(1);
+  }
+}
+.pulse-badge {
+  animation: pulseGlow 1.8s infinite;
+}
+
+@keyframes liveDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.live-indicator {
+  animation: liveDot 1.4s ease-in-out infinite;
+}
+
+/* Stamp Card for Loyalty Rewards */
+.loyalty-stamp-card {
+  background: linear-gradient(145deg, #161b26 0%, #1e2638 100%);
+  border: 1px dashed var(--gold-bright);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+.loyalty-stamp-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.stamp-slot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  transition: all 0.2s ease;
+}
+.stamp-slot.completed {
+  background: var(--gold-gradient);
+  color: #0b0e14;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+.stamp-slot.pending {
+  background: rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+.stamp-slot.reward {
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  color: #fff;
+  border: 1px solid rgba(236, 72, 153, 0.4);
+}
+
+/* Barber Pole Striped Accent */
+.barber-pole-accent {
+  height: 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    #ef4444,
+    #ef4444 10px,
+    #ffffff 10px,
+    #ffffff 20px,
+    #3b82f6 20px,
+    #3b82f6 30px
+  );
+  width: 100%;
+}
+
+/* Time Slot Pill */
+.slot-pill {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+.slot-pill:hover:not(.slot-full):not(.slot-past):not(.slot-blocked) {
+  border-color: var(--gold-bright);
+  transform: translateY(-1px);
+}
+.slot-pill.slot-selected {
+  background: var(--gold-bright) !important;
+  color: #0b0e14 !important;
+  border-color: #fbbf24 !important;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.45);
+}
+.slot-pill.slot-full {
+  opacity: 0.45;
+  background: #11141a;
+  border-color: rgba(255, 255, 255, 0.05);
+  cursor: not-allowed;
+}
+
+/* Digital Salon Ticket / Pass */
+.booking-ticket {
+  background: radial-gradient(circle at 100% 50%, transparent 12px, #161c28 13px) no-repeat,
+              radial-gradient(circle at 0% 50%, transparent 12px, #161c28 13px) no-repeat;
+  background-size: 100% 100%;
+  border-top: 1px solid var(--border-gold);
+  border-bottom: 1px solid var(--border-gold);
+}
+
+/* Modal Backdrop */
+.modal-overlay {
+  background: rgba(7, 10, 15, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+/* Shimmer animation */
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer-gold {
+  background: linear-gradient(90deg, #d4af37 0%, #fff3b0 50%, #d4af37 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 3.5s infinite linear;
+}
+
+/* Bottom Nav Bar for Mobile */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: rgba(14, 18, 27, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(245, 158, 11, 0.2);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Toast Notification */
+#toast-container {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+.toast-msg {
+  pointer-events: auto;
+  animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 640px) {
+  .app-container {
+    padding-bottom: 5.5rem;
+  }
+}
